@@ -41,4 +41,7 @@ sim: $(HEX) | build
 clean:
 	rm -rf build
 
-.PHONY: all prog flash sim clean
+.PHONY: all prog flash sim docs clean
+
+docs:
+	cd docs && pdflatex -interaction=nonstopmode report.tex >/dev/null

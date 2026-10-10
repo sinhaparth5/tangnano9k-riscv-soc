@@ -1,0 +1,17 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        phase: [p1_blink, p2_uart, p3_cpu, p4_accel]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: YosysHQ/setup-oss-cad-suite@v3
+      - run: sudo apt-get update && sudo apt-get install -y gcc-riscv64-unknown-elf
+      - name: Simulate (phases with a testbench)
+        run: '[ ! -f phases/${{ matrix.phase }}/tb.v ] || make PHASE=${{ matrix.phase }} sim | tee sim.log && ! grep -q FAIL sim.log'
+      - name: Synthesize and place-and-route
+        run: make PHASE=${{ matrix.phase }}

@@ -3,3 +3,6 @@ build/
 *.json
 *.hex
 *.elf
+docs/*.aux
+docs/*.log
+docs/*.out
