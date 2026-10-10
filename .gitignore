@@ -6,3 +6,4 @@ build/
 docs/*.aux
 docs/*.log
 docs/*.out
+!phases/p5_hdmi/font.hex
