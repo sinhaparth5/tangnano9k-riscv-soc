@@ -77,7 +77,9 @@ static void run(int argc, char **argv) {
     } else if (streq(c, "cycles")) {
         putu(cycles()); puts_("\r\n");
     } else {
-        puts_("?  (type help)\r\n");
+        puts_("? argc="); putu(argc); puts_(" cmd=");
+        for (char *q = c; *q; q++) { puthex(*q); putc_(' '); }   // dump bytes to spot hidden chars
+        puts_("(type help)\r\n");
     }
 }
 
@@ -99,8 +101,8 @@ int main(void) {
             if (argc) run(argc, argv);
             len = 0;
             puts_("> ");
-        } else if ((c == 0x7f || c == 8) && len) {
-            len--; puts_("\b \b");
+        } else if (c == 0x7f || c == 8) {
+            if (len) { len--; puts_("\b \b"); }
         } else if (c >= ' ' && len < 63) {
             line[len++] = c; putc_(c);
         }

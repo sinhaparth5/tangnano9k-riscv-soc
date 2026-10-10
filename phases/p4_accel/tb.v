@@ -23,6 +23,6 @@ module tb;
             if (prompts == 4) begin $display("\nPASS"); $finish; end
         end
     end
-    initial begin wait(prompts==1); send("seed 1\015rand 10\015"); wait(prompts==3); send("peek 20000000\015"); end
+    initial begin wait(prompts==1); send("\177seed 1\015rand 10\015"); wait(prompts==3); send("peek 20000000\015"); end
     initial begin #60_000_000 $display("FAIL timeout"); $finish; end
 endmodule
