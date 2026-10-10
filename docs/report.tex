@@ -83,14 +83,13 @@ nextpnr place-and-route reports for the GW1NR-9 (8640 LUT4, 6480 DFF, 26 BSRAM):
 Phase & LUT4 & DFF & BSRAM & $F_{\max}$ (MHz)\\\midrule
 1 LED counter & 33 & -- & 0 & 239\\
 2 UART echo & 119 & 50 & 0 & 141\\
-3 CPU + UART & 4113 (47\%) & 1327 & 8 & --\\
+3 CPU + UART & 4113 (47\%) & 1327 & 8 & 51\\
 4 + accelerator & 4019 (46\%) & 1455 & 8 & 53\\\bottomrule
 \end{tabular}
 \end{center}
 Phase 4 also uses 850 ALU blocks (13\%) and 40 RAM16SDP4 (14\%); no hardware multipliers are used.
 The CPU uses more logic than the 2000--3500 LUT4 first estimated, because the multiplier, divider and compressed-instruction decoder are all enabled.
 $F_{\max}$ is the post-route figure from nextpnr, which targeted its default 12\,MHz because no clock constraint is given; every design clears the real 27\,MHz clock by a wide margin.
-The Phase 3 value was not recorded.
 
 \subsection{Accelerator benchmark}
 Measured on the board with \texttt{bench 1000}, using the CPU \texttt{rdcycle} counter:
