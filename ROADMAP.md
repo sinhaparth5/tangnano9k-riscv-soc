@@ -27,6 +27,15 @@ Toolchain: Yosys → nextpnr-himbaechel (gowin) → Apicula `gowin_pack` → ope
 - [x] C benchmark: SW vs HW cycle counts via `rdcycle`
 - Done when: benchmark prints measured speedup (expect 10–50x on suitable workloads; report whatever is actually measured).
 
+## Phase 5 — HDMI text console  (`phases/p5_hdmi`)  **WIP, not yet on a board**
+720x480p60 (CEA, 27 MHz pixel clock = the board oscillator rate), 90x30 text, 8x16 VGA font; the shell output is mirrored to the screen.
+Memory map addition: `0x3000_0000` char RAM (write-only bytes, `row*90+col`), `0x3000_1000` VOFF (scroll offset).
+- [x] `make PHASE=p5_hdmi sim` PASS: video timing (858x525, hsync 62, vsync 6 lines), TMDS encode/decode round-trip, real firmware writes the screen; frame dumped to `build/frame.pbm` (`convert build/frame.pbm frame.png` to look at it)
+- [x] Synthesis + place-and-route succeed (4382 LUT4, 11 BSRAM, 54 MHz)
+- [ ] **Bitstream packing fails**: `gowin_pack`: `tmds_d_n_OBUF_O_2 cannot be placed - location is a Emulated LVDS pin`. HDMI pin numbers in `hdmi.cst` are from memory; check the board schematic for the true-LVDS P/N pairs. Pair form `"tmds_d_p[0]" 71,70;` instead gave `Unconstrained IO: tmds_d_n_OBUF_O_*`.
+- [ ] Display on a real monitor (PLL/OSER10/TLVDS primitives are untested). 2K monitors should scale 480p.
+- CI does not build p5 yet.
+
 ## Notes
 - Phase 3+ will want a pre-built RISC-V GCC; Phase 3 firmware flow gets its own Makefile rules then, not before.
 - Phases 1-3 verified on board; Phase 4 shell (help, rand, seed, bench, peek, poke, cycles) verified for rand/seed. S1 = reset (pin 4, unverified on board).

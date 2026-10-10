@@ -4,6 +4,8 @@ B     := build/$(PHASE)
 SRC   := $(filter-out %/tb.v,$(wildcard rtl/*.v phases/$(PHASE)/*.v))
 FW    := phases/$(PHASE)/fw
 HEX   := $(if $(wildcard $(FW)),build/fw.hex)
+CST   := $(firstword $(wildcard phases/$(PHASE)/*.cst) tangnano9k.cst)
+SIMSRC := $(filter-out $(shell grep -l rPLL phases/$(PHASE)/*.v 2>/dev/null),$(wildcard phases/$(PHASE)/*.v))   # board-only tops aren't simulated
 DEV   := GW1NR-LV9QN88PC6/I5
 FAM   := GW1N-9C
 
@@ -12,8 +14,8 @@ all: $(B).fs
 $(B).json: $(SRC) $(HEX) | build
 	yosys -q -p "read_verilog $(SRC); synth_gowin -top top -json $@"
 
-$(B)_pnr.json: $(B).json tangnano9k.cst
-	nextpnr-himbaechel --json $< --write $@ --device $(DEV) --vopt family=$(FAM) --vopt cst=tangnano9k.cst
+$(B)_pnr.json: $(B).json $(CST)
+	nextpnr-himbaechel --json $< --write $@ --device $(DEV) --vopt family=$(FAM) --vopt cst=$(CST)
 
 $(B).fs: $(B)_pnr.json
 	gowin_pack -d $(FAM) -o $@ $<
@@ -36,7 +38,7 @@ flash: $(B).fs
 	openFPGALoader -b tangnano9k -f $<
 
 sim: $(HEX) | build
-	iverilog -o build/tb.vvp rtl/*.v phases/$(PHASE)/*.v && vvp build/tb.vvp
+	iverilog -o build/tb.vvp rtl/*.v $(SIMSRC) && vvp build/tb.vvp
 
 clean:
 	rm -rf build
