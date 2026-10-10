@@ -6,7 +6,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        phase: [p1_blink, p2_uart, p3_cpu, p4_accel]
+        phase: [p1_blink, p2_uart, p3_cpu, p4_accel, p5_hdmi]
     steps:
       - uses: actions/checkout@v4
       - uses: YosysHQ/setup-oss-cad-suite@v3

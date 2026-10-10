@@ -38,8 +38,8 @@ module top(
     OSER10 o2(.Q(ser[2]), .D0(t2[0]), .D1(t2[1]), .D2(t2[2]), .D3(t2[3]), .D4(t2[4]), .D5(t2[5]), .D6(t2[6]), .D7(t2[7]), .D8(t2[8]), .D9(t2[9]), .PCLK(clk_pix), .FCLK(clk_ser), .RESET(~lock));
     OSER10 oc(.Q(ser[3]), .D0(1'b1), .D1(1'b1), .D2(1'b1), .D3(1'b1), .D4(1'b1), .D5(1'b0), .D6(1'b0), .D7(1'b0), .D8(1'b0), .D9(1'b0), .PCLK(clk_pix), .FCLK(clk_ser), .RESET(~lock));
 
-    TLVDS_OBUF b0(.I(ser[0]), .O(tmds_d_p[0]), .OB(tmds_d_n[0]));
-    TLVDS_OBUF b1(.I(ser[1]), .O(tmds_d_p[1]), .OB(tmds_d_n[1]));
-    TLVDS_OBUF b2(.I(ser[2]), .O(tmds_d_p[2]), .OB(tmds_d_n[2]));
-    TLVDS_OBUF bc(.I(ser[3]), .O(tmds_clk_p), .OB(tmds_clk_n));
+    ELVDS_OBUF b0(.I(ser[0]), .O(tmds_d_p[0]), .OB(tmds_d_n[0]));
+    ELVDS_OBUF b1(.I(ser[1]), .O(tmds_d_p[1]), .OB(tmds_d_n[1]));
+    ELVDS_OBUF b2(.I(ser[2]), .O(tmds_d_p[2]), .OB(tmds_d_n[2]));
+    ELVDS_OBUF bc(.I(ser[3]), .O(tmds_clk_p), .OB(tmds_clk_n));
 endmodule
